@@ -53,3 +53,32 @@ extra_javascript:
 
 nav:
   - Introduction: 'index.md'
+  - Introducing the application:
+      - Tile Based Classification: app/tile-based-classification.md
+      - Application Steps:
+        - Sentinel-2 L1C stage-in: 
+          - Description: app/stage-in/app.md
+          - Running the step: python-env/stage-in.md
+        - Inference: 
+          - Description: app/inference/app.md
+          - Running the step: python-env/inference.md
+    - Package the EO Application:
+      - Creating the containers: 
+        - Scope: containers/scope.md
+        - Build and test the container:
+          - Stage-in: containers/stage-in.md
+          - Inference: containers/inference.md
+      - Create CWL CommandLineTools:
+        - Scope: cwl-cli/scope.md
+        - Stage-in: cwl-cli/stage-in.md
+        - Inference: cwl-cli/inference.md
+      - Create the CWL Workflows:
+        - Scope: cwl-workflow/scope.md
+        - Tile Based Classification: cwl-workflow/tile-based-classification.md
+    - Release the EO Application:
+      - Scope: release/scope.md
+      - Continuous Integration: release/ci.md
+    - Execution Scenarios:
+      - Scope: exec/scope.md
+      - Running on a local machine:
+        - Tile Based Classification: exec/tile-based-classification.md 
