@@ -1,15 +1,15 @@
-import sys
+import os
+from shutil import move
 import numpy as np
 import onnx
 import onnxruntime as ort
 import rasterio
 import pystac
+import click
 from loguru import logger
 from rasterio.enums import Resampling
-import click
-import os
 from rio_stac.stac import create_stac_item
-from shutil import move
+
 
 
 def sliding(shape, window_size, step_size=None, fixed=True):

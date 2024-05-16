@@ -1,8 +1,8 @@
 import os
+import zipfile
 import click
 import pystac 
 import requests
-import zipfile
 from stactools.sentinel2.stac import create_item
 from loguru import logger
 
@@ -77,7 +77,7 @@ def stage(item_url):
     item_path = os.path.join(".", f"{s2_item.id}.json")
     s2_item.set_self_href(item_path)
 
-    s2_item.save_object()
+    s2_item.save_object(include_self_link=False, dest_href=item_path)
 
     logger.info("Creating STAC Catalog")
     cat = pystac.Catalog(
@@ -85,6 +85,7 @@ def stage(item_url):
         description=f"catalog with staged {s2_item.id}",
         title=f"catalog with staged {s2_item.id}",
     )
+    s2_item.make_asset_hrefs_relative()
     cat.add_item(s2_item)
 
     cat.normalize_hrefs("./")
