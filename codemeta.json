@@ -1,0 +1,53 @@
+{
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "@type": "SoftwareSourceCode",
+    "license": "https://spdx.org/licenses/CC-BY-NC-SA-4.0",
+    "codeRepository": "https://github.com/eoap/inference-eoap.git",
+    "dateCreated": "2023-05-16",
+    "datePublished": "2023-05-16",
+    "dateModified": "2023-05-16",
+    "name": "Tile based classification",
+    "version": "1.0.0",
+    "description": "The tile based classification is a software package that allows to classify a Sentinel-2 Level 1C using a pre-trained model.",
+    "developmentStatus": "active",
+    "downloadUrl": "https://github.com/eoap/inference-eoap/releases/tag/1.0.0",
+    "relatedLink": [
+        "https://eoap.github.io/inference-eoap"
+    ],
+    "funder": {
+        "@type": "Organization",
+        "name": "Terradue"
+    },
+    "keywords": [
+        "EUROSAT", "Sentinel-2", "Classification"
+    ],
+    "programmingLanguage": [
+        "Python", "CWL"
+    ],
+    "softwareRequirements": [
+        "container runtime",
+        "cwl runner"
+    ],
+    "author": [
+        {
+            "@type": "Person",
+            "givenName": "Jane",
+            "familyName": "Doe",
+            "email": "jane.doe@acme.earth",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "ACME"
+            }
+        },
+        {
+            "@type": "Person",
+            "givenName": "John",
+            "familyName": "Doe",
+            "email": "john.doe@acme.earth",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "ACME"
+            }
+        }
+    ]
+}
