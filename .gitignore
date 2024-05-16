@@ -1,0 +1,8 @@
+product.zip
+__pycache__
+S2*
+catalog.json
+env_stage_in
+env_inference
+*.tif
+stage.ipynb
