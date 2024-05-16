@@ -6,3 +6,4 @@ env_stage_in
 env_inference
 *.tif
 stage.ipynb
+S2*.json
