@@ -91,12 +91,10 @@ def infer(model_path, s2_arr):
     return img_classes
 
 
-def resize_image(src_path, max_shape=(10980, 10980)):
+def read_image(src_path):
     with rasterio.open(src_path) as src:
-        data = src.read(
-            out_shape=(src.count, max_shape[0], max_shape[1]),
-            resampling=Resampling.bilinear,
-        )
+        data = src.read()
+
     return data
 
 
@@ -113,7 +111,7 @@ def stack(item):
         if asset is not None:
             logger.info(band_key, asset.title)
             # Resize and append to list
-            band_data = resize_image(asset.get_absolute_href())
+            band_data = read_image(asset.get_absolute_href())
             all_bands.append(band_data)
         else:
             logger.info(f"Band {band_key} not found in assets.")
