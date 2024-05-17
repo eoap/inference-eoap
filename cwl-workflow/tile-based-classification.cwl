@@ -14,69 +14,19 @@ $graph:
       item:
         doc: Reference to a STAC item
         label: STAC item reference
-        type: string
-      username:
-        doc: CDS username
-        label: CDS username
-        type: string
-      password:
-        doc: CDS password
-        label: CDS password
-        type: string
+        type: Directory
     outputs:
       - id: stac_catalog
         outputSource:
           - node_inference/stac_catalog
         type: Directory
     steps:
-      node_stage_in:
-        run: "#stage-in"
-        in:
-          item: item
-          username: username
-          password: password
-        out:
-          - staged
       node_inference:
         run: "#inference"
         in:
-          staged:
-            source: node_stage_in/staged
+          input-item: item
         out:
           - stac_catalog
-      
-  - class: CommandLineTool
-    id: stage-in
-    requirements:
-      InlineJavascriptRequirement: {}
-      EnvVarRequirement:
-        envDef:
-          PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-          PYTHONPATH: /app
-          CDES_USER: $(inputs.username)
-          CDES_PASSWORD: $(inputs.password)
-      ResourceRequirement:
-        coresMax: 1
-        ramMax: 1024
-    hints:
-      DockerRequirement:
-        dockerPull: localhost/stage-in:latest
-    baseCommand: ["python", "-m", "app"]
-    arguments: []
-    inputs:
-      item:
-        type: string
-        inputBinding:
-          prefix: --input-item
-      username:
-        type: string
-      password:
-        type: string
-    outputs:
-      staged:
-        outputBinding:
-          glob: .
-        type: Directory
   - class: CommandLineTool
     id: inference
     requirements:
@@ -94,7 +44,7 @@ $graph:
     baseCommand: ["python", "-m", "app"]
     arguments: []
     inputs:
-      staged:
+      input-item:
         type: Directory
         inputBinding:
           prefix: --input-item

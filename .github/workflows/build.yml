@@ -21,6 +21,7 @@ jobs:
         python-version: 3.x
     - run: pip install cwltool
     - run: cwltool --validate cwl-workflow/tile-based-classification.cwl
+    - run: cwltool --validate cwl-workflow/stage-and-cog.cwl
 
   version:
     needs: validate
@@ -46,7 +47,7 @@ jobs:
 
     strategy:
       matrix:
-        step: [stage-in, inference]
+        step: [stage-in, sen2cog, inference]
 
     steps:
     - uses: actions/checkout@v2
@@ -95,12 +96,12 @@ jobs:
 
     strategy:
       matrix:
-        step: ["tile-based-classification"]
+        step: ["stage-and-cog", "tile-based-classification"]
 
     steps:
     - uses: actions/checkout@v2
     - run: |
-        for step in stage-in inference
+        for step in stage-in sen2cog inference 
         do
           tag="ghcr.io/eoap/inference-eoap/${step}:${{needs.version.outputs.app-version}}"
           docker pull ${tag}
@@ -122,7 +123,7 @@ jobs:
         done
     - run: |
         mkdir downloads
-        for cwl in "tile-based-classification"
+        for cwl in "stage-and-cog" "tile-based-classification"
         do
           cp cwl-workflow/${cwl}.cwl downloads/${cwl}.${{needs.version.outputs.app-version}}.cwl
         done
