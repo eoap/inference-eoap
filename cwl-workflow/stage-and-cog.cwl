@@ -15,13 +15,9 @@ $graph:
         doc: Reference to a STAC item
         label: STAC item reference
         type: string
-      username:
-        doc: CDS username
-        label: CDS username
-        type: string
-      password:
-        doc: CDS password
-        label: CDS password
+      access_token:
+        doc: CDSE bearer token
+        label: CDSE bearer token
         type: string
     outputs:
       - id: stac_catalog
@@ -33,8 +29,7 @@ $graph:
         run: "#stage-in"
         in:
           item: item
-          username: username
-          password: password
+          access_token: access_token
         out:
           - staged
       node_sen2cog:
@@ -53,8 +48,7 @@ $graph:
         envDef:
           PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
           PYTHONPATH: /app
-          CDES_USER: $(inputs.username)
-          CDES_PASSWORD: $(inputs.password)
+          CDSE_ACCES_TOKEN: $(inputs.access_token)
       ResourceRequirement:
         coresMax: 1
         ramMax: 1024
@@ -68,9 +62,7 @@ $graph:
         type: string
         inputBinding:
           prefix: --input-item
-      username:
-        type: string
-      password:
+      access_token:
         type: string
     outputs:
       staged:

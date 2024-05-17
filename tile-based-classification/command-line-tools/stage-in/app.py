@@ -12,25 +12,6 @@ def get_asset_href(item, asset_key):
         if key in [asset_key]:    
             return asset.href.replace("catalogue", "zipper")
 
-def get_access_token(username: str, password: str) -> str:
-    data = {
-        "client_id": "cdse-public",
-        "username": username,
-        "password": password,
-        "grant_type": "password",
-    }
-    try:
-        r = requests.post(
-            "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token",
-            data=data,
-        )
-        r.raise_for_status()
-    except Exception as e:
-        raise Exception(
-            f"Access token creation failed. Response from the server was: {r.json()}"
-        )
-    return r.json()["access_token"]
-
 def download_and_extract_file(item: pystac.Item, access_token: str):
     
     headers = {"Authorization": f"Bearer {access_token}"}
@@ -55,7 +36,7 @@ def download_and_extract_file(item: pystac.Item, access_token: str):
 @click.option(
     "--input-item",
     "item_url",
-    help="Sentinel-2 Level-1C CDES STAC Item URL",
+    help="Sentinel-2 Level-1C CDSE STAC Item URL",
     required=True,
 )
 def stage(item_url):
@@ -63,8 +44,7 @@ def stage(item_url):
     logger.info(f"Staging {item_url}")
     item = pystac.read_file(item_url)
     
-    logger.info("Getting access token")
-    access_token = get_access_token(username=os.environ.get("CDES_USER"), password=os.environ.get("CDES_PASSWORD"))
+    access_token = os.environ.get("CDSE_ACCES_TOKEN")
     
     logger.info("Downloading and extracting file")
     staged_s2 = download_and_extract_file(item, access_token)
