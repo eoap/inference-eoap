@@ -56,9 +56,12 @@ nav:
   - Introducing the application:
     - Tile Based Classification: app/tile-based-classification.md
     - Application Steps:
-      - Sentinel-2 L1C stage-in: 
-        - Description: app/stage-in/app.md
-        - Running the step: python-env/stage-in.md
+      - Sentinel-2 L1C pre-processing: 
+        - Description: 
+            - Stage-in: app/stage-in/app.md
+            - Convert to COG: app/sen2cog/app.md
+        - Running the steps: 
+          - cwl-workflow/stage-and-cog.md
       - Inference: 
         - Description: app/inference/app.md
         - Running the step: python-env/inference.md
@@ -66,11 +69,9 @@ nav:
     - Creating the containers: 
       - Scope: containers/scope.md
       - Build and test the container:
-        - Stage-in: containers/stage-in.md
         - Inference: containers/inference.md
     - Create CWL CommandLineTools:
       - Scope: cwl-cli/scope.md
-      - Stage-in: cwl-cli/stage-in.md
       - Inference: cwl-cli/inference.md
     - Create the CWL Workflows:
       - Scope: cwl-workflow/scope.md
