@@ -6,9 +6,12 @@ The OGC published the _Best Practice for Earth Observation Application Package_,
 
 The Best Practice includes recommendations for the application design patterns, package encoding, container and data interfaces for data stage-in and stage-out strategies focusing on three main viewpoints: Application, Package and Platform.
 
-The focus of this documentation set is the inference using an ONNX model. 
+The focus of this documentation set is the inference using an ONNX model where the application package wraps the inference function using ONNX python runtime.
 
 ## The model 
 
 The model is a Convolutional Neural Network (CNN) trained with Keras against the benchmark dataset EuroSAT. 
 
+The tile based classification application takes a trained model in the ONNX format and does the inference on Sentinel-2 Level-1C data.
+
+The model was trained using a Sequential Convolutional Neural Network (CNN) with Keras based on the benchmark dataset EuroSAT. 
