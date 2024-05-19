@@ -12,7 +12,7 @@ This process involves reading a STAC Catalog, resizing and converting assets, an
 
 The script uses Python libraries such as `pystac`, `rasterio`, `click`, and `loguru`.
 
-### Functionalities and Flow
+#### Functionalities and Flow
 
 Importing Required Libraries:
 

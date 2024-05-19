@@ -1,6 +1,6 @@
 ## Sentinel-2 Level-1C stage-in
 
-    ### Step purpose 
+### Step purpose 
 
 Purpose: While there are many options to consume Sentinel-2 Level-2A in a Cloud native processing approach, the Level-1C data must instead be staged from the Copernicus Data Space Ecosystem. The output is a STAC Catalog referencing a local STAC Item with the Sentinel-2 Level-1C files (assets) available in the local filesystem
 
