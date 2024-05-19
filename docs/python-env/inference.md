@@ -14,7 +14,7 @@ This step has a dedicated lab available at `/workspace/inference-eoap/practice-l
 
 The results produced will be available in the local folder `/workspace/inference-eoap/runs`
 
-```bash linenums="1" hl_lines="2-4" title="terminal"
+```bash linenums="1" title="terminal"
 --8<--
 scripts/setup.sh
 --8<--
@@ -24,7 +24,7 @@ scripts/setup.sh
 
 The required Python modules are installed using `pip`:
 
-```bash linenums="1" hl_lines="3" title="terminal"
+```bash linenums="1" title="terminal"
 --8<--
 scripts/create_env.sh
 --8<--
@@ -35,7 +35,7 @@ scripts/create_env.sh
 
 The command line tool is invoked with:
 
-```bash linenums="1" hl_lines="7-12" title="terminal"
+```bash linenums="1" title="terminal"
 --8<--
 scripts/inference.sh
 --8<--
