@@ -71,7 +71,7 @@ Let's break down what this command does:
 The folder `/workspace/inference-eoap/runs` contains: 
 
 ```
-(base) jovyan@jupyter-mrossi--training:~/quickwin$ tree runs/
+(base) jovyan@jupyter-mrossi--training:~/inference-eoap$ tree runs/
 runs/
 
 TODO

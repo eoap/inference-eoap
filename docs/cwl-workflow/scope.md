@@ -13,7 +13,7 @@ This section shows how to do the step:
 
 ### Orchestrating CWL CommandLineTools
 
-The CWL `CommandLineTool`s wrapping the water bodies detection command-line tools had a single CWL class.
+The CWL `CommandLineTool`s wrapping the inference command-line tools had a single CWL class.
 
 An Application Package must include at least one CWL `Workflow` class orchestrating the CWL `CommandLineTool` above.
 

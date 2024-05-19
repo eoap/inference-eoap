@@ -19,7 +19,7 @@ A --> B(("Inference"));
 B --> C[STAC Catalog]
 ```
 
-The CWL Workflow is shown below and the lines highlighted chain the water bodies detection step:
+The CWL Workflow is shown below and the lines highlighted chain the inference step:
 
 ```yaml linenums="1" title="tile-based-classification.cwl"
 --8<--

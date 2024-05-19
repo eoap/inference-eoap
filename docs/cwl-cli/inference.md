@@ -9,7 +9,7 @@ This step has a dedicated lab available at `/workspace/inference-eoap/practice-l
 
 ### How to wrap a step as a CWL CommandLineTool 
 
-The CWL document below shows the water bodies detection Python command line tool step wrapped as a CWL CommandLineTool:
+The CWL document below shows the inference Python command line tool step wrapped as a CWL CommandLineTool:
 
 TODO 
 
@@ -39,7 +39,7 @@ TODO
     * `aoi`: A string representing the area of interest (AOI) as a bounding box, bound to the `--aoi` argument.
     * `epsg`: A string representing the EPSG code for the coordinate system, bound to the `--epsg` argument.
     * `band`: An array of strings representing the name of the bands to be extracted, bound to the `--band` argument.
-* `outputs`: Specifies the tool's output. It defines an output parameter named `water-body`, which is of type `Directory`. The outputBinding section specifies that the tool is expected to produce one or more files (glob: .) as output.
+* `outputs`: Specifies the tool's output. It defines an output parameter named `stac_catalog`, which is of type `Directory`. The outputBinding section specifies that the tool is expected to produce one or more files (glob: .) as output.
 
 ### Steps
 

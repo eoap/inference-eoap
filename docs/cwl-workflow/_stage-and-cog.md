@@ -44,7 +44,7 @@ scripts/exec-stage-and-cog.sh
 The folder `/workspace/inference-eoap/runs` contains: 
 
 ```
-(base) jovyan@jupyter-fbrito--training:~/quickwin$ tree runs
+(base) jovyan@jupyter-fbrito--training:~/inference-eoap$ tree runs
 runs
 TODO
 ```
