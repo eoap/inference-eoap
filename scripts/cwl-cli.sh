@@ -7,3 +7,4 @@ command -v podman >/dev/null 2>&1 && {
 cwltool ${flag} \
     --outdir ${WORKSPACE}/runs \
     ${WORKSPACE}/cwl-cli/inference.cwl \
+    TODO
