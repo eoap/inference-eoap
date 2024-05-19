@@ -1,8 +1,6 @@
-export WORKSPACE=/workspace/inference-eoap
+version="1.0.0"
 
-command -v podman >/dev/null 2>&1 && { 
-    flag="--podman"
-}
+export WORKSPACE=/workspace/inference-eoap
 
 # check if the results.json file exists
 if [ ! -f ${WORKSPACE}/runs/results.json ]; then
@@ -10,8 +8,8 @@ if [ ! -f ${WORKSPACE}/runs/results.json ]; then
     exit 1
 fi
 
-
-cwltool ${flag} \
+cwltool \
+    --podman \
     --outdir ${WORKSPACE}/runs \
-    ${WORKSPACE}/cwl-workflow/tile-based-classification.cwl.cwl \
+    ${WORKSPACE}/runs/tile-based-classification.${version}.cwl \
     --input-item $( cat ${WORKSPACE}/runs/results.json | jq .stac_catalog.path )
