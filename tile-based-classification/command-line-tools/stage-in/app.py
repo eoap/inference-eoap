@@ -13,7 +13,7 @@ def get_asset_href(item, asset_key):
             return asset.href.replace("catalogue", "zipper")
 
 def download_and_extract_file(item: pystac.Item, access_token: str):
-    
+    """Downloads and extracts the asset file from a STAC Item using an access token."""
     headers = {"Authorization": f"Bearer {access_token}"}
 
     session = requests.Session()
@@ -40,11 +40,15 @@ def download_and_extract_file(item: pystac.Item, access_token: str):
     required=True,
 )
 def stage(item_url):
-    
+    """Stages a Sentinel-2 Level-1C product by downloading and extracting it, then creating a STAC Item."""
+
     logger.info(f"Staging {item_url}")
     item = pystac.read_file(item_url)
     
-    access_token = os.environ.get("CDSE_ACCES_TOKEN")
+    access_token = os.environ.get("CDSE_ACCESS_TOKEN")
+    if not access_token:
+        logger.error("CDSE_ACCESS_TOKEN environment variable is not set.")
+        return
     
     logger.info("Downloading and extracting file")
     staged_s2 = download_and_extract_file(item, access_token)
