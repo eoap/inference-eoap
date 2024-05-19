@@ -31,7 +31,7 @@ scripts/create_env.sh
 ```
 
 
-### Step 3 - Run the water bodies detection
+### Step 3 - Run the inference
 
 The command line tool is invoked with:
 

@@ -13,7 +13,7 @@ The  tile based classification inference has a recipe to build the container ima
 
 The `inference` step container image recipe is:
 
-```dockerfile linenums="1" title="detect-water-body/Dockerfile"
+```dockerfile linenums="1" title="inference/Dockerfile"
 --8<--
 inference-eoap/tile-based-classification/command-line-tools/inference/Dockerfile
 --8<--
