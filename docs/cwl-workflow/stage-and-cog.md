@@ -20,7 +20,7 @@ This step has a dedicated lab available at `/workspace/inference-eoap/practice-l
 
 Use `cwltool` to run the _stage-and-cog.cwl_ CWL Workflow with a Sentinel-2 Level-1C acquisition reference
 
-The CWL Workflow is shown below and the lines highlighted chain the water bodies detection step:
+The CWL Workflow is shown below and the lines highlighted chain the `stage-in` and `conversion` to COG steps:
 
 ```yaml linenums="1" title="stage-and-cog.cwl"
 --8<--
@@ -28,7 +28,10 @@ cwl-workflow/stage-and-cog.cwl
 --8<--
 ```
 
-To run this CWL document, one does:
+To run this CWL document run the script below to:
+
+* provide your CDSE username and password to generate and access token
+* Use `cwltool` to run stage-and-cog.cwl CWL description  
 
 ```console title="terminal"
 --8<--
