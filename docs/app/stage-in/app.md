@@ -1,17 +1,8 @@
-# Sentinel-2 Level-1C stage-in
+## Sentinel-2 Level-1C stage-in
 
-
-
-### Step purpose 
+    ### Step purpose 
 
 Purpose: While there are many options to consume Sentinel-2 Level-2A in a Cloud native processing approach, the Level-1C data must instead be staged from the Copernicus Data Space Ecosystem. The output is a STAC Catalog referencing a local STAC Item with the Sentinel-2 Level-1C files (assets) available in the local filesystem
-
-This step is highlighted below:
-
-``` mermaid
-graph TB
-
-```
 
 ### Code
 
@@ -64,6 +55,8 @@ Creating STAC Catalog:
 * Creates a STAC Catalog, adds the STAC Item, and normalizes hrefs.
 * Saves the catalog as a self-contained STAC Catalog.
 
+#### Script Execution 
+
 The script is executable as a command-line tool as its usage is:
 
 ```
@@ -76,8 +69,12 @@ Options:
   --help             Show this message and exit.
 ```
 
+#### Listing
+
 The Python code is provided here:
 
+```python linenums="1" title="tile-based-classification/command-line-tools/stage-in/app.py"
 --8<--
 tile-based-classification/command-line-tools/stage-in/app.py
 --8<--
+```
