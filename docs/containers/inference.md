@@ -19,7 +19,7 @@ inference-eoap/tile-based-classification/command-line-tools/inference/Dockerfile
 --8<--
 ```
 
-### Building the container:
+### Building the container
 
 Build the container images with:
 
@@ -55,7 +55,7 @@ Let's break down what this command does:
 * `podman run`: This is the command to run a container.
 * `-i`: This flag makes the container interactive, allowing you to interact with it via the terminal.
 * `--userns=keep-id`: It instructs `podman` to keep the user namespace ID.
-`--mount=type=bind,source=/workspace/runs,target=/runs`: This option mounts a directory from the host system to the container. In this case, it mounts the `/workspace/runs` directory on the host to the /runs directory inside the container.
+* `--mount=type=bind,source=/workspace/runs,target=/runs`: This option mounts a directory from the host system to the container. In this case, it mounts the `/workspace/runs` directory on the host to the /runs directory inside the container.
 * `--workdir=/runs`: Sets the working directory inside the container to `/runs`.
 * `--read-only=true`: Makes the file system inside the container read-only, meaning you can't write or modify files inside the container.
 * `--user=1001:100`: Specifies the user and group IDs to be used within the container.
