@@ -11,8 +11,6 @@ This step has a dedicated lab available at `/workspace/inference-eoap/practice-l
 
 The CWL document below shows the inference Python command line tool step wrapped as a CWL CommandLineTool:
 
-TODO 
-
 ```yaml linenums="1" hl_lines="9-12 49-53" title="cwl-cli/inference"
 --8<--
 cwl-cli/inference.cwl
@@ -32,13 +30,7 @@ Let's break down the key components of this CWL document:
 * `baseCommand`: Defines the base command to be executed in the container. In this case, it's running a Python module called "app" with the command `python -m app`.
 * `arguments`: This section is empty, meaning there are no additional command-line arguments specified here. The tool is expected to receive its arguments via the input parameters.
 * `inputs`: Describes the input parameters for the tool, including their types and how they are bound to command-line arguments. The tool expects the following inputs:
-
-TODO
-
-    * `item`: A string representing the input STAC item (image) to be processed, bound to the `--input-item` argument.
-    * `aoi`: A string representing the area of interest (AOI) as a bounding box, bound to the `--aoi` argument.
-    * `epsg`: A string representing the EPSG code for the coordinate system, bound to the `--epsg` argument.
-    * `band`: An array of strings representing the name of the bands to be extracted, bound to the `--band` argument.
+    * `--input-item`: the path to the folder where a Sentinel-2 Level-1C has been staged and converted to COG.
 * `outputs`: Specifies the tool's output. It defines an output parameter named `stac_catalog`, which is of type `Directory`. The outputBinding section specifies that the tool is expected to produce one or more files (glob: .) as output.
 
 ### Steps
@@ -59,6 +51,29 @@ The folder `/workspace/inference-eoap/runs` contains:
 ```
 (base) jovyan@jupyter-fbrito--training:~/inference-eoap$ tree runs
 runs
-TODO
-2 directories, 4 files
+├── am8yu9it
+│   ├── S2A_T33TVM_20240125T100359_L1C-classification
+│   │   ├── S2A_T33TVM_20240125T100359_L1C-classification.json
+│   │   └── classification.tif
+│   └── catalog.json
+├── results.json
+└── ydmns4od
+    ├── S2A_T33TVM_20240125T100359_L1C
+    │   ├── S2A_T33TVM_20240125T100359_L1C.json
+    │   ├── blue.tif
+    │   ├── cirrus.tif
+    │   ├── coastal.tif
+    │   ├── green.tif
+    │   ├── nir.tif
+    │   ├── nir08.tif
+    │   ├── nir09.tif
+    │   ├── red.tif
+    │   ├── rededge1.tif
+    │   ├── rededge2.tif
+    │   ├── rededge3.tif
+    │   ├── swir16.tif
+    │   └── swir22.tif
+    └── catalog.json
+
+4 directories, 19 files
 ```
