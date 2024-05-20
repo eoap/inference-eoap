@@ -11,4 +11,4 @@ fi
 
 python \
     ${WORKSPACE}/tile-based-classification/command-line-tools/inference/app.py \
-    --input-item $( cat ${WORKSPACE}/runs/results.json | jq .stac_catalog.path )
+    --input-item $( cat ${WORKSPACE}/runs/results.json | jq -r .stac_catalog.path )

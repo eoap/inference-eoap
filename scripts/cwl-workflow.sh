@@ -14,4 +14,4 @@ fi
 cwltool ${flag} \
     --outdir ${WORKSPACE}/runs \
     ${WORKSPACE}/cwl-workflow/tile-based-classification.cwl.cwl \
-    --input-item $( cat ${WORKSPACE}/runs/results.json | jq .stac_catalog.path )
+    --input-item $( cat ${WORKSPACE}/runs/results.json | jq -r .stac_catalog.path )

@@ -24,4 +24,4 @@ podman run \
     -m \
     app \
     --input-item \
-    $( cat ${WORKSPACE}/runs/results.json | jq .stac_catalog.path )
+    $( cat ${WORKSPACE}/runs/results.json | jq -r .stac_catalog.path )

@@ -12,4 +12,4 @@ cwltool \
     --podman \
     --outdir ${WORKSPACE}/runs \
     ${WORKSPACE}/runs/tile-based-classification.${version}.cwl \
-    --input-item $( cat ${WORKSPACE}/runs/results.json | jq .stac_catalog.path )
+    --input-item $( cat ${WORKSPACE}/runs/results.json | jq -r .stac_catalog.path )
