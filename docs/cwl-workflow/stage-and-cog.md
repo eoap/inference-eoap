@@ -1,6 +1,11 @@
 ### Goal
 
+
 Run the _stage-and-cog.cwl_ CWL Workflow that that stages a Sentinel-2 Level-1C from the CDSE and converts/resamples its assets to COG.
+
+### Lab
+
+This step has a dedicated lab available at `/workspace/inference-eoap/practice-labs/Application steps/01 - Stage-and-cog.ipynb`
 
 ### Dependencies
 
