@@ -72,8 +72,29 @@ The folder `/workspace/inference-eoap/runs` contains:
 
 ```
 (base) jovyan@jupyter-mrossi--training:~/inference-eoap$ tree runs/
-runs/
+runs
+├── S2A_T33TVM_20240125T100359_L1C-classification
+│   ├── S2A_T33TVM_20240125T100359_L1C-classification.json
+│   └── classification.tif
+├── catalog.json
+├── results.json
+└── ydmns4od
+    ├── S2A_T33TVM_20240125T100359_L1C
+    │   ├── S2A_T33TVM_20240125T100359_L1C.json
+    │   ├── blue.tif
+    │   ├── cirrus.tif
+    │   ├── coastal.tif
+    │   ├── green.tif
+    │   ├── nir.tif
+    │   ├── nir08.tif
+    │   ├── nir09.tif
+    │   ├── red.tif
+    │   ├── rededge1.tif
+    │   ├── rededge2.tif
+    │   ├── rededge3.tif
+    │   ├── swir16.tif
+    │   └── swir22.tif
+    └── catalog.json
 
-TODO
-1 directory, 4 files
+3 directories, 19 files
 ```
