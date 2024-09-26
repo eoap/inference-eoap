@@ -10,8 +10,6 @@ The focus of this documentation set is the inference using an ONNX model where t
 
 ## The model 
 
-The model is a Convolutional Neural Network (CNN) trained with Keras against the benchmark dataset EuroSAT. 
+The model was trained using a Sequential Convolutional Neural Network (CNN) with Keras based on the benchmark dataset [EuroSAT](https://github.com/phelber/EuroSAT).
 
 The tile based classification application takes a trained model in the ONNX format and does the inference on Sentinel-2 Level-1C data.
-
-The model was trained using a Sequential Convolutional Neural Network (CNN) with Keras based on the benchmark dataset EuroSAT. 
