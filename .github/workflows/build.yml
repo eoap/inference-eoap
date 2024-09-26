@@ -121,6 +121,8 @@ jobs:
           a=$(cat codemeta.json | jq -r '.author[0].affiliation["name"]') \
           yq eval -i  '."s:author" += [{"class": "s:Person", "s.name": env(n), "s.email": env(e), "s.affiliation": env(a)}]' $cwl
         done
+    - name: Cleanup downloads folder
+      run: rm -rf downloads/*
     - run: |
         mkdir downloads
         for cwl in "stage-and-cog" "tile-based-classification"
@@ -131,6 +133,7 @@ jobs:
       with:
         name: application-package
         path: downloads
+        overwrite: true
     - name: upload linux artifact 1
       uses: actions/upload-release-asset@v1
       env:
