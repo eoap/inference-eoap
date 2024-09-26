@@ -133,7 +133,6 @@ jobs:
       with:
         name: application-package
         path: downloads
-        overwrite: true
     - name: upload linux artifact 1
       uses: actions/upload-release-asset@v1
       env:
