@@ -60,7 +60,7 @@ def infer(model_path, s2_arr):
 
     batch_size = 10
     total_chips = len(windows)
-    num_steps = int(total_chips / batch_size)
+    num_steps = (total_chips + batch_size - 1) // batch_size
 
     # Initialize the classification result array
     img_classes = np.zeros((s2_arr.shape[0], s2_arr.shape[1]), dtype=np.uint8)
@@ -70,8 +70,9 @@ def infer(model_path, s2_arr):
     logger.info("Start the inference step")
     for b in range(num_steps):
         logger.info(f"Processing batch {b+1}/{num_steps}")
-        chips = np.empty((batch_size, 64, 64, 13))
-        for k in range(batch_size):
+        current_batch_size = min(batch_size, total_chips - b * batch_size)
+        chips = np.empty((current_batch_size, 64, 64, 13))
+        for k in range(current_batch_size):
             ymin, xmin, xmax, ymax = next(windows_)
             chips[k] = s2_arr[
                 xmin : xmin + xmax, ymin : ymin + ymax, :
@@ -82,7 +83,7 @@ def infer(model_path, s2_arr):
         predictions.append(np.argmax(preds, axis=-1))
 
         # Classify the image parts
-        for i in range(batch_size):
+        for i in range(current_batch_size):
             ymin_cl, xmin_cl, xmax_cl, ymax_cl = next(windows_class)
             img_classes[xmin_cl : xmin_cl + xmax_cl, ymin_cl : ymin_cl + ymax_cl] = (
                 predictions[b][i]
@@ -100,7 +101,7 @@ def read_image(src_path):
 
 def stack(item):
 
-    bands = [key for key, asset in item.get_assets().items() if "data" in asset.roles]
+    bands = [key for key, asset in item.get_assets().items() if "data" in (asset.roles or [])]
 
     # Prepare array to hold all bands
     all_bands = []

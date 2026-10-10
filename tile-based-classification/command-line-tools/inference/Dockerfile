@@ -1,6 +1,8 @@
-FROM docker.io/python:3.10-slim
+FROM docker.io/python:3.12-slim
 
-RUN pip install --no-cache-dir pystac==1.9.0 click loguru requests numpy rasterio onnx onnxruntime rio-stac && \
+RUN apt-get update && apt-get install -y --no-install-recommends libexpat1 && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir pystac==1.15.2 click loguru requests numpy rasterio onnx onnxruntime rio-stac && \
     python -c "import rasterio"
 
 ADD app.py /app/app.py
