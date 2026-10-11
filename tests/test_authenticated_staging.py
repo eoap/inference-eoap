@@ -31,3 +31,10 @@ def test_workflow_passes_correct_token_variable():
     document = yaml.safe_load((root/'cwl-workflow/stage-and-cog.cwl').read_text())
     tool = next(p for p in document['$graph'] if p['id'] == 'stage-in')
     assert tool['requirements']['EnvVarRequirement']['envDef']['CDSE_ACCESS_TOKEN'] == '$(inputs.access_token)'
+
+
+def test_staging_declares_required_network_access():
+    import yaml
+    document = yaml.safe_load((root/'cwl-workflow/stage-and-cog.cwl').read_text())
+    tool = next(p for p in document['$graph'] if p['id'] == 'stage-in')
+    assert tool['requirements']['NetworkAccess']['networkAccess'] is True

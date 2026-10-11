@@ -50,6 +50,8 @@ $graph:
 - class: CommandLineTool
   id: stage-in
   requirements:
+    NetworkAccess:
+      networkAccess: true
     InlineJavascriptRequirement: {}
     EnvVarRequirement:
       envDef:
