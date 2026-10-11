@@ -15,7 +15,7 @@ The `inference` step container image recipe is:
 
 ```dockerfile linenums="1" title="inference/Dockerfile"
 --8<--
-inference-eoap/tile-based-classification/command-line-tools/inference/Dockerfile
+tile-based-classification/command-line-tools/inference/Dockerfile
 --8<--
 ```
 

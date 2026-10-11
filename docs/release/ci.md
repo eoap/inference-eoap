@@ -47,14 +47,14 @@ SCM -- codemeta.json --> F
 
 Below an example of a GitHub CI configuration implementing the scenario:
 
-```yaml linenums="1" title=".github/workflows/build.yaml"
+```yaml linenums="1" title=".github/workflows/build.yml"
 --8<--
-.github/workflows/build.yaml
+.github/workflows/build.yml
 --8<--
 ```
 
 ### Artefacts
 
-The released application package is published here: https://github.com/eoap/inference-eoap/releases/tag/1.0.0
+The intended release is **2.0.0**. Feature CI publishes immutable `2.0.0-rc.<run-number>` images and a checksummed Actions artifact containing all three CWL entrypoints. Stable promotion waits for authenticated notebook and scientific output acceptance; it is not triggered by a normal push.
 
 The container is available at: https://github.com/eoap/inference-eoap/pkgs/container/inference-eoap%2Finference
