@@ -55,7 +55,7 @@ $graph:
       envDef:
         PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
         PYTHONPATH: /app
-        CDSE_ACCES_TOKEN: $(inputs.access_token)
+        CDSE_ACCESS_TOKEN: $(inputs.access_token)
     ResourceRequirement:
       coresMax: 1
       ramMax: 1024
