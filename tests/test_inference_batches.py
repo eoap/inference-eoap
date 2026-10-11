@@ -16,7 +16,7 @@ class Session:
         return [type("Output", (), {"name": "output"})()]
     def run(self, names, inputs):
         chips = inputs["input"]
-        prediction = np.zeros((*chips.shape[:3], 2), dtype=np.float32)
+        prediction = np.zeros((chips.shape[0], 2), dtype=np.float32)
         prediction[..., 1] = 1
         return [prediction]
 

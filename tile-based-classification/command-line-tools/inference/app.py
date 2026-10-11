@@ -83,7 +83,7 @@ def infer(model_path, s2_arr):
         for i in range(current_batch_size):
             x, y, width, height = next(windows_class)
             img_classes[y:y + height, x:x + width] = (
-                classes[i, :height, :width]
+                classes[i] if classes.ndim == 1 else classes[i, :height, :width]
             )
 
     return img_classes
