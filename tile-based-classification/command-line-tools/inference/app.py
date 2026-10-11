@@ -53,7 +53,7 @@ def infer(model_path, s2_arr):
     target_shape = (s2_arr.shape[0], s2_arr.shape[1])
     logger.debug(f"Target shape: {target_shape}")
 
-    windows = sliding(target_shape, 64, fixed=True)
+    windows = sliding(target_shape, 64, fixed=False)
 
     windows_ = iter(windows)
     windows_class = iter(windows)
@@ -65,28 +65,27 @@ def infer(model_path, s2_arr):
     # Initialize the classification result array
     img_classes = np.zeros((s2_arr.shape[0], s2_arr.shape[1]), dtype=np.uint8)
 
-    predictions = []
 
     logger.info("Start the inference step")
     for b in range(num_steps):
         logger.info(f"Processing batch {b+1}/{num_steps}")
         current_batch_size = min(batch_size, total_chips - b * batch_size)
-        chips = np.empty((current_batch_size, 64, 64, 13))
+        chips = np.zeros((current_batch_size, 64, 64, 13), dtype=np.float32)
         for k in range(current_batch_size):
             ymin, xmin, xmax, ymax = next(windows_)
-            chips[k] = s2_arr[
+            chips[k, :xmax, :ymax] = s2_arr[
                 xmin : xmin + xmax, ymin : ymin + ymax, :
             ]  # Adapt based on how your data is structured
 
         # Run prediction with ONNX
         preds = sess.run([output_name], {input_name: chips.astype(np.float32)})[0]
-        predictions.append(np.argmax(preds, axis=-1))
+        classes = np.argmax(preds, axis=-1)
 
         # Classify the image parts
         for i in range(current_batch_size):
             ymin_cl, xmin_cl, xmax_cl, ymax_cl = next(windows_class)
             img_classes[xmin_cl : xmin_cl + xmax_cl, ymin_cl : ymin_cl + ymax_cl] = (
-                predictions[b][i]
+                classes[i, :xmax_cl, :ymax_cl]
             )
 
     return img_classes

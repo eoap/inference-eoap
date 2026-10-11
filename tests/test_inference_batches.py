@@ -25,3 +25,10 @@ def test_partial_batch_is_not_dropped():
         classified = app.infer("unused", np.ones((256, 256, 13), dtype=np.float32))
     assert classified.shape == (256, 256)
     assert np.all(classified == 1)
+
+
+def test_edge_chips_are_classified():
+    with patch.object(app.onnx, "load"), patch.object(app.onnx.checker, "check_model"), patch.object(app.ort, "InferenceSession", return_value=Session()):
+        classified = app.infer("unused", np.ones((257, 301, 13), dtype=np.float32))
+    assert classified.shape == (257, 301)
+    assert np.all(classified == 1)
