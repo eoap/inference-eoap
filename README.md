@@ -9,7 +9,7 @@ The webpage of the documentation is https://eoap.github.io/inference-eoap/.
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 ## Typed CWL and PDE validation
 
-Application packages use CWL v1.2, embedded URI records, described ports and
+Application packages use CWL v1.2, published URI schema imports, described ports and
 Schema.org repository/version/license/author metadata. Generate and validate
 standalone documentation with `python scripts/cwl-docs.py --validate`.
 The PDE deployment and executable lab tasks are in the sibling
@@ -59,3 +59,17 @@ intended commit, then validate the published candidate artifacts before promotio
 pre-release tests without downloading an older stable workflow. Set
 `EOAP_ARTIFACT_MODE=release` and `EOAP_RELEASE_VERSION=<candidate-or-stable-tag>`
 when testing matching published GitHub release assets. No packing command is used.
+
+### Processing package and Rocky runtime
+
+The three processing commands are distributed in one Hatch wheel, including the
+checked-in ONNX model: `stage-sentinel2`, `sentinel2-to-cog`, and
+`classify-sentinel2`. Existing CWL `/app/app.py` commands remain compatible.
+
+Use Python 3.12 and run `hatch run dev:check` and `hatch run test:test`. The
+development environment installs `requirements/development.txt` with hashes
+before installing this checkout without dependency resolution. Processing images
+build that wheel in Rocky 10.1 and install the hash-locked runtime as user `neo`
+(UID/GID 2000), check dependencies, and remove pip from the application venv.
+Candidate publication does not establish authenticated staging or notebook
+acceptance; those remain required before stable promotion.

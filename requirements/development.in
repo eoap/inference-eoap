@@ -1,0 +1,13 @@
+-r ../requirements-notebooks.in
+hatchling>=1.27,<2
+hatch==1.18.1
+uv
+virtualenv
+ruff
+mypy
+bandit
+pytest
+types-requests
+boto3-stubs[s3]
+
+editables

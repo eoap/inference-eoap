@@ -14,7 +14,7 @@ def render(path):
         if isinstance(value, dict):
             assert '$include' not in value, f'{path}: external include'
             if '$import' in value:
-                assert value['$import'] == 'https://raw.githubusercontent.com/eoap/schemas/main/ogc.yaml', f'{path}: unapproved schema import'
+                assert value['$import'] in {'https://raw.githubusercontent.com/eoap/schemas/main/ogc.yaml', 'https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml'}, f'{path}: unapproved schema import'
             for child in value.values(): check(child)
         elif isinstance(value, list):
             for child in value: check(child)
@@ -63,7 +63,7 @@ if __name__ == '__main__':
             from cwltool.main import main
             original_request = requests.sessions.Session.request
             def blocked_request(session, method, url, **kwargs):
-                if url.split('#')[0] == 'https://raw.githubusercontent.com/eoap/schemas/main/ogc.yaml':
+                if url.split('#')[0] in {'https://raw.githubusercontent.com/eoap/schemas/main/ogc.yaml', 'https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml'}:
                     return original_request(session, method, url, **kwargs)
                 raise RuntimeError('Only the approved OGC schema may be fetched')
             requests.sessions.Session.request = blocked_request

@@ -11,16 +11,12 @@ $graph:
     InlineJavascriptRequirement: {}
     SchemaDefRequirement:
       types:
-      - name: '#URI'
-        type: record
-        fields:
-        - name: value
-          type: string
+      - $import: https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml
   inputs:
     item:
       doc: Reference to a STAC item
       label: STAC item reference
-      type: '#URI'
+      type: https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml#URI
     access_token:
       doc: CDSE bearer token
       label: CDSE bearer token
@@ -64,11 +60,7 @@ $graph:
       ramMax: 1024
     SchemaDefRequirement:
       types:
-      - name: '#URI'
-        type: record
-        fields:
-        - name: value
-          type: string
+      - $import: https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml
   hints:
     DockerRequirement:
       dockerPull: localhost/stage-in:latest
@@ -79,7 +71,7 @@ $graph:
   arguments: []
   inputs:
     item:
-      type: '#URI'
+      type: https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml#URI
       inputBinding:
         prefix: --input-item
         valueFrom: $(self.value)
@@ -112,11 +104,7 @@ $graph:
       ramMax: 4096
     SchemaDefRequirement:
       types:
-      - name: '#URI'
-        type: record
-        fields:
-        - name: value
-          type: string
+      - $import: https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml
   hints:
     DockerRequirement:
       dockerPull: docker.io/library/sen2cog:latest

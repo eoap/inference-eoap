@@ -13,11 +13,7 @@ requirements:
     ramMax: 8192
   SchemaDefRequirement:
     types:
-    - name: '#URI'
-      type: record
-      fields:
-      - name: value
-        type: string
+    - $import: https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml
 hints:
   DockerRequirement:
     dockerPull: localhost/inference:latest

@@ -10,3 +10,9 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 site/
+
+.hatch/
+dist/
+*.pyc
+.mypy_cache/
+.ruff_cache/

@@ -6,3 +6,10 @@ lab-results
 site
 __pycache__
 *.pyc
+
+.venv
+.hatch
+dist
+.pytest_cache
+.mypy_cache
+.ruff_cache
