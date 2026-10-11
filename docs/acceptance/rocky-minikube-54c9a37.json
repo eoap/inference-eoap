@@ -1,0 +1,36 @@
+{
+  "processing_commit": "54c9a37e89dacf588a57f294bef71aa783ccb787",
+  "image": "eoap-inference-inference:rocky-54c9a37",
+  "real_acquisition": "S2A_T33TVM_20240125T100359_L1C",
+  "datetime": "2024-01-25T10:03:11.024000+00:00",
+  "shape": [
+    10980,
+    10980
+  ],
+  "projection": "EPSG:32633",
+  "bbox": [
+    13.685439247095587,
+    45.95825868842945,
+    15.128266945123777,
+    46.95363733377599
+  ],
+  "class_values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "input_band_count": 13,
+  "source_georeferencing_preserved": true,
+  "partial_edge_matches_actual_onnx": true,
+  "unit_tests_on_minikube": 8,
+  "non_root_runtime_smoke_jobs": 3,
+  "remote_authenticated_staging_rerun": false,
+  "full_notebook_acceptance": false,
+  "published_candidate_acceptance": false
+}
