@@ -72,10 +72,8 @@ def infer(model_path, s2_arr):
         current_batch_size = min(batch_size, total_chips - b * batch_size)
         chips = np.zeros((current_batch_size, 64, 64, 13), dtype=np.float32)
         for k in range(current_batch_size):
-            ymin, xmin, xmax, ymax = next(windows_)
-            chips[k, :xmax, :ymax] = s2_arr[
-                xmin : xmin + xmax, ymin : ymin + ymax, :
-            ]  # Adapt based on how your data is structured
+            x, y, width, height = next(windows_)
+            chips[k, :height, :width] = s2_arr[y:y + height, x:x + width, :]  # Adapt based on how your data is structured
 
         # Run prediction with ONNX
         preds = sess.run([output_name], {input_name: chips.astype(np.float32)})[0]
@@ -83,9 +81,9 @@ def infer(model_path, s2_arr):
 
         # Classify the image parts
         for i in range(current_batch_size):
-            ymin_cl, xmin_cl, xmax_cl, ymax_cl = next(windows_class)
-            img_classes[xmin_cl : xmin_cl + xmax_cl, ymin_cl : ymin_cl + ymax_cl] = (
-                classes[i, :xmax_cl, :ymax_cl]
+            x, y, width, height = next(windows_class)
+            img_classes[y:y + height, x:x + width] = (
+                classes[i, :height, :width]
             )
 
     return img_classes
