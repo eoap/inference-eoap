@@ -45,7 +45,8 @@ $graph:
         PYTHONPATH: /app
     ResourceRequirement:
       coresMax: 2
-      ramMax: 4096
+      ramMin: 8192
+      ramMax: 8192
     SchemaDefRequirement:
       types:
       - name: '#URI'

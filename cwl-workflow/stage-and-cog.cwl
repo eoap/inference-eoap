@@ -60,6 +60,7 @@ $graph:
         CDSE_ACCESS_TOKEN: $(inputs.access_token)
     ResourceRequirement:
       coresMax: 1
+      ramMin: 1024
       ramMax: 1024
     SchemaDefRequirement:
       types:
@@ -107,6 +108,7 @@ $graph:
         PYTHONPATH: /app
     ResourceRequirement:
       coresMax: 2
+      ramMin: 4096
       ramMax: 4096
     SchemaDefRequirement:
       types:
