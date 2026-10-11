@@ -1,5 +1,9 @@
 import os
 import zipfile
+from pathlib import Path
+from urllib.parse import urlparse
+import boto3
+from botocore.config import Config
 import click
 import pystac 
 import requests
@@ -18,7 +22,8 @@ def download_and_extract_file(item: pystac.Item, access_token: str):
 
     session = requests.Session()
     session.headers.update(headers)
-    response = session.get(get_asset_href(item, "PRODUCT"), headers=headers, stream=True)
+    response = session.get(get_asset_href(item, "PRODUCT"), stream=True, timeout=(30, 300))
+    response.raise_for_status()
 
     with open("product.zip", "wb") as file:
         for chunk in response.iter_content(chunk_size=8192):
@@ -28,6 +33,35 @@ def download_and_extract_file(item: pystac.Item, access_token: str):
         zip_ref.extractall(".")
     
     return os.path.join(os.getcwd(), item.id)
+
+
+def download_s3_product(item):
+    """Download the complete real SAFE product using CDSE S3 credentials."""
+    href = next((a.href for a in item.assets.values() if a.href.startswith("s3://") and ".SAFE/" in a.href), None)
+    if not href:
+        raise click.ClickException("STAC item has no S3 SAFE product asset")
+    parsed = urlparse(href)
+    prefix = parsed.path.lstrip("/").split(".SAFE/", 1)[0] + ".SAFE/"
+    target = Path(prefix.rstrip("/")).name
+    client = boto3.client("s3", endpoint_url=os.environ.get("CDSE_S3_ENDPOINT", "https://eodata.dataspace.copernicus.eu"),
+        aws_access_key_id=os.environ.get("CDSE_S3_ACCESS_KEY", os.environ.get("AWS_ACCESS_KEY_ID")), aws_secret_access_key=os.environ.get("CDSE_S3_SECRET_KEY", os.environ.get("AWS_SECRET_ACCESS_KEY")),
+        region_name="default", config=Config(s3={"addressing_style": "path"}, connect_timeout=30, read_timeout=300))
+    count = 0
+    for page in client.get_paginator("list_objects_v2").paginate(Bucket=parsed.netloc, Prefix=prefix):
+        for obj in page.get("Contents", []):
+            relative = Path(obj["Key"][len(prefix):])
+            if not relative.parts or ".." in relative.parts or relative.is_absolute():
+                raise click.ClickException("Unsafe S3 product object path")
+            destination = Path(target) / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            client.download_file(parsed.netloc, obj["Key"], str(destination))
+            if destination.stat().st_size != obj["Size"]:
+                raise click.ClickException("Incomplete S3 product download")
+            count += 1
+    if not count:
+        raise click.ClickException("S3 product prefix contains no files")
+    logger.info("Downloaded {} real product files", count)
+    return str(Path(target).resolve())
 
 @click.command(
     short_help="Stage-in",
@@ -46,13 +80,14 @@ def stage(item_url):
     item = pystac.read_file(item_url)
     
     access_token = os.environ.get("CDSE_ACCESS_TOKEN")
-    if not access_token:
-        logger.error("CDSE_ACCESS_TOKEN environment variable is not set.")
-        return
-    
-    logger.info("Downloading and extracting file")
-    staged_s2 = download_and_extract_file(item, access_token)
-    
+    if (os.environ.get("CDSE_S3_ACCESS_KEY") and os.environ.get("CDSE_S3_SECRET_KEY")) or (os.environ.get("AWS_ACCESS_KEY_ID") and os.environ.get("AWS_SECRET_ACCESS_KEY")):
+        staged_s2 = download_s3_product(item)
+    elif access_token:
+        logger.info("Downloading and extracting file")
+        staged_s2 = download_and_extract_file(item, access_token)
+    else:
+        raise click.ClickException("Set CDSE_ACCESS_TOKEN or both AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY")
+
     logger.info("Creating STAC Item")
     s2_item = create_item(
         granule_href=staged_s2,

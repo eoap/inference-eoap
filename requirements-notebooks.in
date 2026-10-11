@@ -1,0 +1,10 @@
+-r requirements-runtime.in
+PyYAML
+pytest
+cwltool
+nbclient
+nbformat
+bash-kernel
+ipykernel
+boto3
+python-dotenv

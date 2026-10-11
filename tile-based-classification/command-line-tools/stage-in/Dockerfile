@@ -1,8 +1,5 @@
-FROM docker.io/python:3.10-slim
-
-RUN pip install --no-cache-dir pystac==1.9.0 click loguru requests stactools-sentinel2 && \
-    python -c "import rasterio"
-
-ADD app.py /app/app.py
-
+FROM docker.io/library/python:3.12.11-bookworm@sha256:bea386df48d7ee07eed0a1f3e6f9d5c0292c228b8d8ed2ea738b7a57b29c4470
+COPY requirements-runtime.txt /tmp/requirements-runtime.txt
+RUN pip install --no-cache-dir --require-hashes -r /tmp/requirements-runtime.txt
+COPY tile-based-classification/command-line-tools/stage-in/app.py /app/app.py
 ENTRYPOINT []

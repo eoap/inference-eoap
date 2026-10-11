@@ -1,11 +1,6 @@
-FROM docker.io/python:3.12-slim
-
-RUN apt-get update && apt-get install -y --no-install-recommends libexpat1 && rm -rf /var/lib/apt/lists/*
-
-RUN pip install --no-cache-dir pystac==1.15.2 click loguru requests numpy rasterio onnx onnxruntime rio-stac && \
-    python -c "import rasterio"
-
-ADD app.py /app/app.py
-ADD model/sentinel2_classification_trained_model_e50_9190.onnx /app/model/sentinel2_classification_trained_model_e50_9190.onnx
-
+FROM docker.io/library/python:3.12.11-bookworm@sha256:bea386df48d7ee07eed0a1f3e6f9d5c0292c228b8d8ed2ea738b7a57b29c4470
+COPY requirements-runtime.txt /tmp/requirements-runtime.txt
+RUN pip install --no-cache-dir --require-hashes -r /tmp/requirements-runtime.txt
+COPY tile-based-classification/command-line-tools/inference/app.py /app/app.py
+COPY tile-based-classification/command-line-tools/inference/model /app/model
 ENTRYPOINT []
