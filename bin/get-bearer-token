@@ -14,12 +14,11 @@ def get_access_token(username: str, password: str) -> str:
         r = requests.post(
             "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token",
             data=data,
+            timeout=30,
         )
         r.raise_for_status()
-    except Exception as e:
-        raise Exception(
-            f"Access token creation failed. Response from the server was: {r.json()}"
-        )
+    except requests.RequestException as error:
+        raise click.ClickException("CDSE access token request failed") from error
     return r.json()["access_token"]
 
 @click.command(
@@ -28,11 +27,13 @@ def get_access_token(username: str, password: str) -> str:
 )
 @click.option(
     "--username",
+    envvar="CDSE_USERNAME",
     help="Username for the Copernicus Data Space Ecosystem",
     required=True,
 )
 @click.option(
     "--password",
+    envvar="CDSE_PASSWORD",
     help="Password for the Copernicus Data Space Ecosystem",
     required=True,
 )

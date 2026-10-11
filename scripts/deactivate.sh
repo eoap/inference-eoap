@@ -1,2 +1,2 @@
 deactivate
-rm -fr env_inference
+rm -rf "${WORKSPACE:-/workspace/inference-eoap}/env_inference"

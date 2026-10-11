@@ -1,3 +1,6 @@
-python3 -m venv env_inference
-source env_inference/bin/activate
-pip install --no-cache-dir pystac==1.9.0 click loguru requests numpy rasterio onnx onnxruntime rio-stac
+#!/usr/bin/env bash
+set -euo pipefail
+export WORKSPACE=${WORKSPACE:-/workspace/inference-eoap}
+uv venv --allow-existing --seed --python "${EOAP_PYTHON:-python3.12}" "$WORKSPACE/env_inference"
+source "$WORKSPACE/env_inference/bin/activate"
+uv pip sync --require-hashes "$WORKSPACE/requirements-runtime.txt"

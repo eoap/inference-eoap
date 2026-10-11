@@ -1,0 +1,11 @@
+pystac
+click
+loguru
+requests
+numpy
+rasterio
+onnx
+onnxruntime
+rio-stac
+stactools-sentinel2
+boto3

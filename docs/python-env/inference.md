@@ -22,7 +22,7 @@ scripts/setup.sh
 
 ### Step 2 - Create the Python virtual environment
 
-The required Python modules are installed using `pip`:
+Create a Python 3.12 environment and synchronize the same hash-locked dependencies used by the containers with `uv`:
 
 ```bash linenums="1" title="terminal"
 --8<--

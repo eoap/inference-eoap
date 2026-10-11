@@ -1,6 +1,6 @@
 ### Goal
 
-Run the `tile-based-classification.1.0.0.cwl` released application package using `cwltool`.
+Run the intended 2.0.0 workflow using `cwltool`. Source mode is the default during preparation; set `EOAP_ARTIFACT_MODE=release` and `EOAP_RELEASE_VERSION=<published-tag>` to validate matching release assets.
 
 ### Lab
 
@@ -16,7 +16,7 @@ scripts/setup.sh
 --8<--
 ```
 
-### Step 2 - Download the released Application package
+### Step 2 - Select the source or published Application Package
 
 ```bash linenums="1" title="scripts/download-app-inference.sh"
 --8<--
