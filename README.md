@@ -49,7 +49,7 @@ with real Sentinel-2 input. The synthetic fixture remains a development check;
 it cannot establish scientific release acceptance.
 
 CI checks regressions, standalone contracts and all three container builds.
-Explicit workflow dispatch with `publish_candidate=true` publishes
+Feature pushes and explicit workflow dispatch with `publish_candidate=true` publish
 `2.0.0-rc.<run-number>` images and a checksummed artifact containing all three
 CWL entrypoints pinned to the pushed image digests. It does not publish a stable
 release. Record authenticated notebook and scientific output acceptance for the
