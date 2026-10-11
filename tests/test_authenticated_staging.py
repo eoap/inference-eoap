@@ -11,7 +11,7 @@ spec.loader.exec_module(app)
 
 def test_download_http_error_does_not_write_zip():
     item = MagicMock()
-    item.get_assets.return_value = {'PRODUCT': MagicMock(href='https://catalogue.example/product')}
+    item.assets = {'PRODUCT': MagicMock(href='https://catalogue.example/product')}
     session = MagicMock()
     session.get.return_value.raise_for_status.side_effect = requests.HTTPError('unauthorized')
     with patch.object(app.requests, 'Session', return_value=session), patch('builtins.open') as opened:
@@ -38,3 +38,14 @@ def test_staging_declares_required_network_access():
     document = yaml.safe_load((root/'cwl-workflow/stage-and-cog.cwl').read_text())
     tool = next(p for p in document['$graph'] if p['id'] == 'stage-in')
     assert tool['requirements']['NetworkAccess']['networkAccess'] is True
+
+
+def test_current_stac_product_resolves_odata_download():
+    item = MagicMock()
+    item.assets = {}
+    item.id = "S2A_REAL_PRODUCT"
+    response = MagicMock()
+    response.json.return_value = {"value": [{"Id": "product-uuid"}]}
+    with patch.object(app.requests, "get", return_value=response):
+        assert app.get_asset_href(item, "PRODUCT") == "https://download.dataspace.copernicus.eu/odata/v1/Products(product-uuid)/$value"
+        response.raise_for_status.assert_called_once()

@@ -11,10 +11,17 @@ from stactools.sentinel2.stac import create_item
 from loguru import logger
 
 def get_asset_href(item, asset_key):
-    """Returns the asset of a STAC Item defined with its asset key"""
-    for key, asset in item.get_assets().items():
-        if key in [asset_key]:    
-            return asset.href.replace("catalogue", "zipper")
+    """Resolve legacy product links or the current CDSE OData download URL."""
+    if asset_key in item.assets:
+        return item.assets[asset_key].href.replace("catalogue", "zipper")
+    name = item.id if item.id.endswith(".SAFE") else item.id + ".SAFE"
+    response = requests.get("https://catalogue.dataspace.copernicus.eu/odata/v1/Products",
+        params={"$filter": "Name eq '" + name.replace("'", "''") + "'", "$select": "Id"}, timeout=30)
+    response.raise_for_status()
+    products = response.json()["value"]
+    if len(products) != 1:
+        raise click.ClickException("Expected exactly one CDSE SAFE product")
+    return "https://download.dataspace.copernicus.eu/odata/v1/Products(" + products[0]["Id"] + ")/$value"
 
 def download_and_extract_file(item: pystac.Item, access_token: str):
     """Downloads and extracts the asset file from a STAC Item using an access token."""
