@@ -1,3 +1,6 @@
-python3 -m venv env_stage_in
-source env_stage_in/bin/activate
-pip install --no-cache-dir pystac==1.9.0 click loguru requests stactools-sentinel2 
+#!/usr/bin/env bash
+set -euo pipefail
+export WORKSPACE=${WORKSPACE:-/workspace/inference-eoap}
+uv venv --seed --python "${EOAP_PYTHON:-python3.12}" "$WORKSPACE/env_stage_in"
+source "$WORKSPACE/env_stage_in/bin/activate"
+uv pip sync --require-hashes "$WORKSPACE/requirements-runtime.txt"
