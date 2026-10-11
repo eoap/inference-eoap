@@ -4,6 +4,11 @@ on:
     branches: [main, 'feature/**']
   pull_request:
   workflow_dispatch:
+    inputs:
+      publish_candidate:
+        description: Publish candidate images and immutable CWL after acceptance
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -24,12 +29,65 @@ jobs:
   containers:
     needs: validate
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     strategy:
       matrix:
         step: [stage-in, sen2cog, inference]
+    env:
+      IMAGE: ghcr.io/eoap/inference-eoap/${{ matrix.step }}:2.0.0-rc.${{ github.run_number }}
     steps:
       - uses: actions/checkout@v4
-      - run: docker build --file tile-based-classification/command-line-tools/${{ matrix.step }}/Dockerfile --tag inference-${{ matrix.step }}:${{ github.sha }} .
-      - run: docker run --rm inference-${{ matrix.step }}:${{ github.sha }} python -c "import rasterio, pystac, onnxruntime"
-# Stable publication is intentionally gated until authenticated notebook acceptance
-# and immutable release-artifact validation are recorded for the release commit.
+      - run: docker build --file tile-based-classification/command-line-tools/${{ matrix.step }}/Dockerfile --tag "$IMAGE" .
+      - run: docker run --rm "$IMAGE" python -c "import rasterio, pystac, onnxruntime, boto3"
+      - uses: docker/login-action@v3
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_candidate
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish candidate
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_candidate
+        run: |
+          docker push "$IMAGE"
+          digest=$(docker inspect "$IMAGE" --format '{{index .RepoDigests 0}}')
+          export DIGEST="${digest##*@}"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          image = os.environ['IMAGE']
+          name = image.rsplit('/', 1)[1].split(':', 1)[0]
+          Path(name+'.json').write_text(json.dumps({name: image+'@'+os.environ['DIGEST']}))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_candidate
+        with:
+          name: image-${{ matrix.step }}
+          path: ${{ matrix.step }}.json
+  candidate-artifacts:
+    needs: containers
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_candidate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --require-hashes -r requirements-notebooks.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: image-*
+          path: images
+          merge-multiple: true
+      - run: python scripts/prepare-release-artifacts.py --version 2.0.0-rc.${{ github.run_number }} --images images --output candidate
+      - run: |
+          for package in candidate/*.cwl; do cwltool --validate "$package"; done
+          cd candidate
+          sha256sum --check SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: inference-2.0.0-rc.${{ github.run_number }}
+          path: candidate
+# This workflow publishes candidates only. Stable promotion requires recorded
+# authenticated notebook and immutable-artifact acceptance for the source commit.

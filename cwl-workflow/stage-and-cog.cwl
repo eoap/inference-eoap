@@ -1,7 +1,7 @@
 cwlVersion: v1.2
 $namespaces:
   s: https://schema.org/
-s:softwareVersion: 1.0.0
+s:softwareVersion: 2.0.0
 $graph:
 - class: Workflow
   id: main

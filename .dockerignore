@@ -1,0 +1,8 @@
+.git
+.env
+.env.*
+runs
+lab-results
+site
+__pycache__
+*.pyc

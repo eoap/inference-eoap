@@ -7,10 +7,10 @@
     "datePublished": "2023-05-16",
     "dateModified": "2023-05-16",
     "name": "Tile based classification",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "The tile based classification is a software package that allows to classify a Sentinel-2 Level 1C using a pre-trained model.",
     "developmentStatus": "active",
-    "downloadUrl": "https://github.com/eoap/inference-eoap/releases/tag/1.0.0",
+    "downloadUrl": "https://github.com/eoap/inference-eoap/releases/tag/2.0.0",
     "relatedLink": [
         "https://eoap.github.io/inference-eoap"
     ],
@@ -19,10 +19,13 @@
         "name": "Terradue"
     },
     "keywords": [
-        "EUROSAT", "Sentinel-2", "Classification"
+        "EUROSAT",
+        "Sentinel-2",
+        "Classification"
     ],
     "programmingLanguage": [
-        "Python", "CWL"
+        "Python",
+        "CWL"
     ],
     "softwareRequirements": [
         "container runtime",

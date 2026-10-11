@@ -1,4 +1,4 @@
-version="1.0.0"
+version=${EOAP_RELEASE_VERSION:-2.0.0}
 
 export WORKSPACE=/workspace/inference-eoap
 
@@ -12,4 +12,4 @@ cwltool \
     --podman \
     --outdir ${WORKSPACE}/runs \
     ${WORKSPACE}/runs/tile-based-classification.${version}.cwl \
-    --input-item $( cat ${WORKSPACE}/runs/results.json | jq -r .stac_catalog.path )
+    --item $( cat ${WORKSPACE}/runs/results.json | jq -r .stac_catalog.path )

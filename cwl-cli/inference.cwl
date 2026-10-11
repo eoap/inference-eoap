@@ -41,7 +41,7 @@ outputs:
     doc: stac catalog.
 $namespaces:
   s: https://schema.org/
-s:softwareVersion: 1.0.0
+s:softwareVersion: 2.0.0
 s:codeRepository: https://github.com/eoap/inference-eoap
 s:license: https://spdx.org/licenses/CC-BY-SA-4.0.html
 s:author:
