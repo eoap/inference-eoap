@@ -15,10 +15,20 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v7
+    - uses: actions/setup-python@v7
       with:
         python-version: 3.x
+    - name: Bootstrap patched pip and CA bundle
+      shell: bash
+      run: |
+        python -m pip install --upgrade "pip @ https://files.pythonhosted.org/packages/3f/06/3e4420302363fbb71be3c7f35ce042f54bfca330e3e66b3a2e3c4cca579f/pip-26.2.2-py3-none-any.whl#sha256=fd7f4dfa8190e014013b9f08f3e973f4e4c26ffd179a204895533a7254813a70"
+        python -m pip install --upgrade "certifi>=2026.10.19"
+        python -c "import pip, certifi; from pip._vendor import certifi as bundled; assert tuple(map(int, pip.__version__.split('.'))) >= (26, 2, 2); assert tuple(map(int, certifi.__version__.split('.'))) >= (2026, 10, 19); assert tuple(map(int, bundled.__version__.split('.'))) >= (2026, 10, 19)"
+        python -m pip download --no-deps --dest "$RUNNER_TEMP/python-bootstrap" "pip @ https://files.pythonhosted.org/packages/3f/06/3e4420302363fbb71be3c7f35ce042f54bfca330e3e66b3a2e3c4cca579f/pip-26.2.2-py3-none-any.whl#sha256=fd7f4dfa8190e014013b9f08f3e973f4e4c26ffd179a204895533a7254813a70"
+        echo "VIRTUALENV_EXTRA_SEARCH_DIR=$RUNNER_TEMP/python-bootstrap" >> "$GITHUB_ENV"
+        echo "VIRTUALENV_PIP=26.2.2" >> "$GITHUB_ENV"
+        echo "VIRTUALENV_DOWNLOAD=false" >> "$GITHUB_ENV"
     - run: pip install cwltool
     - run: cwltool --validate cwl-workflow/tile-based-classification.cwl
     - run: cwltool --validate cwl-workflow/stage-and-cog.cwl
@@ -33,11 +43,11 @@ jobs:
       app-version: ${{ steps.set-version.outputs.version }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v7
     - run: echo "APP_VERSION=$(cat codemeta.json | jq -r .version )" >> $GITHUB_ENV
     - run: echo app version is $APP_VERSION
     - id: set-version
-      run: echo "::set-output name=version::$APP_VERSION"
+      run: echo "version=$APP_VERSION" >> "$GITHUB_OUTPUT"
 
   container-build:
 
@@ -50,13 +60,13 @@ jobs:
         step: [stage-in, sen2cog, inference]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v7
     - run: echo version ${{needs.version.outputs.app-version}}
     - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: build & push image
       run: |
         IMAGE_ID=ghcr.io/eoap/inference-eoap/${{ matrix.step }}
-        docker build tile-based-classification/command-line-tools/${{ matrix.step }} --file tile-based-classification/command-line-tools/${{ matrix.step }}/Dockerfile --tag ${{ matrix.step }}
+        docker build --pull --no-cache tile-based-classification/command-line-tools/${{ matrix.step }} --file tile-based-classification/command-line-tools/${{ matrix.step }}/Dockerfile --tag ${{ matrix.step }}
         docker tag ${{ matrix.step }} $IMAGE_ID:${{needs.version.outputs.app-version}}
         docker push $IMAGE_ID:${{needs.version.outputs.app-version}}
 
@@ -84,7 +94,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
     - id: set-upload-url
-      run: echo "::set-output name=upload_url::${{ steps.create_release.outputs.upload_url }}"
+      run: echo "upload_url=${{ steps.create_release.outputs.upload_url }}" >> "$GITHUB_OUTPUT"
 
   publish-artifacts:
 
@@ -99,7 +109,7 @@ jobs:
         step: ["stage-and-cog", "tile-based-classification"]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v7
     - run: |
         for step in stage-in sen2cog inference 
         do
